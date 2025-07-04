@@ -1,0 +1,92 @@
+{% extends "baseHome.html" %}
+
+
+{# ----------- HEAD ---------- #}
+{% block title %}Vuelos | AeroLine{% endblock %}
+
+
+{# --------- BREADCRUMB ------- #}
+{% block breadcrumb_items %}
+ <li class="breadcrumb-item active" aria-current="page">Vuelos</li>
+{% endblock %}
+
+
+{# ---------- CONTENIDO ------- #}
+{% block content %}
+<div class="container py-4">
+ <h2 class="mb-4">
+   <i class="bi bi-airplane me-2"></i>Próximos vuelos
+ </h2>
+
+
+ {# --- Estadísticas rápidas --- #}
+ <div class="row g-3 mb-4">
+   <div class="col-md-4">
+     <div class="card shadow-sm border-start border-primary">
+       <div class="card-body">
+         <h6 class="text-muted mb-1">Vuelos listados</h6>
+         <h3 class="mb-0">{{ total_vuelos }}</h3>
+       </div>
+     </div>
+   </div>
+   <div class="col-md-4">
+     <div class="card shadow-sm border-start border-success">
+       <div class="card-body">
+         <h6 class="text-muted mb-1">Precio mínimo</h6>
+         <h3 class="mb-0">${{ precio_min|default:"—" }}</h3>
+       </div>
+     </div>
+   </div>
+   <div class="col-md-4">
+     <div class="card shadow-sm border-start border-danger">
+       <div class="card-body">
+         <h6 class="text-muted mb-1">Precio máximo</h6>
+         <h3 class="mb-0">${{ precio_max|default:"—" }}</h3>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+ {# --- Tabla de vuelos --- #}
+ {% if vuelos %}
+   <div class="table-responsive">
+     <table class="table table-hover align-middle">
+       <thead class="table-dark">
+         <tr>
+           <th>Código</th>
+           <th>Origen</th>
+           <th>Destino</th>
+           <th>Salida</th>
+           <th>Duración</th>
+           <th>Avión</th>
+           <th>Precio&nbsp;base</th>
+         </tr>
+       </thead>
+       <tbody>
+         {% for v in vuelos %}
+         <tr>
+           <td>{{ v.codigo }}</td>
+           <td>{{ v.origen }}</td>
+           <td>{{ v.destino }}</td>
+           <td>{{ v.fecha_salida|date:"d M Y H:i" }}</td>
+           <td>{{ v.duracion_estimada }}</td>
+           <td>{{ v.avion }}</td>
+           <td>${{ v.precio_base }}</td>
+         </tr>
+         {% endfor %}
+       </tbody>
+     </table>
+   </div>
+
+
+ {% else %}
+   <div class="alert alert-info">No hay vuelos programados.</div>
+ {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+

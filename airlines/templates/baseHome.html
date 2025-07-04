@@ -1,0 +1,519 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="{% block meta_description %}Sistema de gestión de aerolínea profesional{% endblock %}">
+   <meta name="keywords" content="{% block meta_keywords %}aerolínea, vuelos, reservas, aviación{% endblock %}">
+   <meta name="author" content="{% block meta_author %}AeroLine System{% endblock %}">
+  
+   <title>{% block title %}AeroLine - Sistema de Gestión Aeroportuaria{% endblock %}</title>
+
+
+   <!-- Favicon -->
+   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+  
+   <!-- Bootstrap CSS -->
+   <link
+       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+       rel="stylesheet"
+       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+       crossorigin="anonymous"
+   >
+  
+   <!-- Bootstrap Icons -->
+   <link
+       rel="stylesheet"
+       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+   >
+  
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+       rel="stylesheet"
+   >
+  
+   <!-- Custom CSS -->
+   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  
+   <!-- Block for additional CSS -->
+   {% block extra_css %}{% endblock %}
+  
+   <!-- Custom Styles -->
+   <style>
+       :root {
+           --primary-color: #0066cc;
+           --primary-dark: #004499;
+           --secondary-color: #6c757d;
+           --accent-color: #17a2b8;
+           --success-color: #28a745;
+           --warning-color: #ffc107;
+           --danger-color: #dc3545;
+           --light-bg: #f8f9fa;
+           --dark-text: #343a40;
+           --border-color: #dee2e6;
+           --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+           --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+           --transition: all 0.3s ease;
+       }
+      
+       body {
+           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+           background-color: var(--light-bg);
+           color: var(--dark-text);
+           line-height: 1.6;
+       }
+      
+       .navbar-brand {
+           font-family: 'Poppins', sans-serif;
+           font-weight: 600;
+           font-size: 1.5rem;
+           color: var(--primary-color) !important;
+           transition: var(--transition);
+       }
+      
+       .navbar-brand:hover {
+           color: var(--primary-dark) !important;
+           transform: translateY(-1px);
+       }
+      
+       .navbar {
+           background: rgba(255, 255, 255, 0.95) !important;
+           backdrop-filter: blur(10px);
+           border-bottom: 1px solid var(--border-color);
+           box-shadow: var(--shadow-sm);
+       }
+      
+       .nav-link {
+           font-weight: 500;
+           color: var(--dark-text) !important;
+           transition: var(--transition);
+           position: relative;
+           padding: 0.75rem 1rem !important;
+       }
+      
+       .nav-link:hover {
+           color: var(--primary-color) !important;
+           transform: translateY(-1px);
+       }
+      
+       .nav-link.active {
+           color: var(--primary-color) !important;
+           font-weight: 600;
+       }
+      
+       .nav-link.active::after {
+           content: '';
+           position: absolute;
+           bottom: 0;
+           left: 50%;
+           transform: translateX(-50%);
+           width: 30px;
+           height: 2px;
+           background-color: var(--primary-color);
+           border-radius: 2px;
+       }
+      
+       .nav-link.disabled {
+           opacity: 0.5;
+           cursor: not-allowed;
+       }
+      
+       .btn-primary {
+           background-color: var(--primary-color);
+           border-color: var(--primary-color);
+           font-weight: 500;
+           transition: var(--transition);
+       }
+      
+       .btn-primary:hover {
+           background-color: var(--primary-dark);
+           border-color: var(--primary-dark);
+           transform: translateY(-1px);
+           box-shadow: var(--shadow-md);
+       }
+      
+       .card {
+           border: none;
+           box-shadow: var(--shadow-sm);
+           transition: var(--transition);
+           border-radius: 0.75rem;
+       }
+      
+       .card:hover {
+           box-shadow: var(--shadow-md);
+           transform: translateY(-2px);
+       }
+      
+       footer {
+           background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+           color: white;
+           margin-top: 3rem;
+       }
+      
+       footer a {
+           color: rgba(255, 255, 255, 0.8);
+           text-decoration: none;
+           transition: var(--transition);
+       }
+      
+       footer a:hover {
+           color: white;
+       }
+      
+       .navbar-toggler {
+           border: none;
+           padding: 0.25rem 0.5rem;
+       }
+      
+       .navbar-toggler:focus {
+           box-shadow: none;
+       }
+      
+       .alert {
+           border: none;
+           border-radius: 0.75rem;
+           box-shadow: var(--shadow-sm);
+       }
+      
+       .breadcrumb {
+           background: transparent;
+           padding: 0;
+           margin-bottom: 1.5rem;
+       }
+      
+       .breadcrumb-item + .breadcrumb-item::before {
+           content: ">";
+           color: var(--secondary-color);
+       }
+      
+       .status-badge {
+           padding: 0.25rem 0.75rem;
+           border-radius: 50px;
+           font-size: 0.875rem;
+           font-weight: 500;
+       }
+      
+       .status-active {
+           background-color: rgba(40, 167, 69, 0.1);
+           color: var(--success-color);
+       }
+      
+       .status-inactive {
+           background-color: rgba(220, 53, 69, 0.1);
+           color: var(--danger-color);
+       }
+      
+       .status-pending {
+           background-color: rgba(255, 193, 7, 0.1);
+           color: #856404;
+       }
+      
+       @media (max-width: 768px) {
+           .navbar-brand {
+               font-size: 1.25rem;
+           }
+          
+           .nav-link {
+               padding: 0.5rem 0.875rem !important;
+           }
+       }
+      
+       /* Loading spinner */
+       .spinner-border-sm {
+           width: 1rem;
+           height: 1rem;
+       }
+      
+       /* Custom scrollbar */
+       ::-webkit-scrollbar {
+           width: 8px;
+       }
+      
+       ::-webkit-scrollbar-track {
+           background: var(--light-bg);
+       }
+      
+       ::-webkit-scrollbar-thumb {
+           background: var(--border-color);
+           border-radius: 4px;
+       }
+      
+       ::-webkit-scrollbar-thumb:hover {
+           background: var(--secondary-color);
+       }
+   </style>
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+   <!-- Skip to main content for accessibility -->
+   <a href="#main-content" class="visually-hidden-focusable">Ir al contenido principal</a>
+  
+   <!-- Header / Navbar -->
+   <header>
+       <nav class="navbar navbar-expand-lg navbar-light fixed-top" role="navigation" aria-label="Navegación principal">
+           <div class="container">
+               <!-- Brand -->
+               <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}" aria-label="Ir al inicio">
+                   <i class="bi bi-airplane-fill me-2"></i>
+                   <span>AeroLine</span>
+               </a>
+              
+               <!-- Mobile toggle button -->
+               <button
+                   class="navbar-toggler"
+                   type="button"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#mainNavbar"
+                   aria-controls="mainNavbar"
+                   aria-expanded="false"
+                   aria-label="Alternar navegación"
+               >
+                   <span class="navbar-toggler-icon"></span>
+               </button>
+              
+               <!-- Navigation menu -->
+               <div class="collapse navbar-collapse" id="mainNavbar">
+                   <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                       <li class="nav-item">
+                           <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                              href="{% url 'home' %}"
+                              aria-current="{% if request.resolver_match.url_name == 'home' %}page{% endif %}">
+                               <i class="bi bi-house-fill me-1"></i>
+                               Inicio
+                           </a>
+                       </li>
+                       
+                                <li class="nav-item">
+                                <a class="nav-link {% if 'flight' in request.resolver_match.url_name %}active{% endif %}"
+                                    href="{% url 'flight_list' %}"
+                                    aria-current="{% if 'flight' in request.resolver_match.url_name %}page{% endif %}">
+                                <i class="bi bi-airplane me-1"></i>
+                                Vuelos
+
+                           </a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link {% if 'aircraft' in request.resolver_match.url_name %}active{% endif %}"
+                              href="{% url 'aircraft_list' %}"
+                              aria-current="{% if 'aircraft' in request.resolver_match.url_name %}page{% endif %}">
+                               <i class="bi bi-gear-fill me-1"></i>
+                               Aeronaves
+                           </a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link {% if 'airport' in request.resolver_match.url_name %}active{% endif %}"
+                              href="{% url 'airport_list' %}"
+                              aria-current="{% if 'airport' in request.resolver_match.url_name %}page{% endif %}">
+                               <i class="bi bi-building me-1"></i>
+                               Aeropuertos
+                           </a>
+                       </li>
+                       <li class="nav-item dropdown">
+                           <a class="nav-link dropdown-toggle"
+                              href="#"
+                              id="navbarDropdown"
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false">
+                               <i class="bi bi-person-circle me-1"></i>
+                               Cuenta
+                           </a>
+                           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                               {% if user.is_authenticated %}
+                                   <li><a class="dropdown-item" href="">
+                                       <i class="bi bi-person me-2"></i>Perfil
+                                   </a></li>
+                                   <li><a class="dropdown-item" href="">
+                                       <i class="bi bi-gear me-2"></i>Configuración
+                                   </a></li>
+                                   <li><hr class="dropdown-divider"></li>
+                                   <li><a class="dropdown-item" href="">
+                                       <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                   </a></li>
+                               {% else %}
+                                   <li><a class="dropdown-item" href="">
+                                       <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                                   </a></li>
+                                   <li><a class="dropdown-item" href="">
+                                       <i class="bi bi-person-plus me-2"></i>Registrarse
+                                   </a></li>
+                               {% endif %}
+                           </ul>
+                       </li>
+                   </ul>
+               </div>
+           </div>
+       </nav>
+   </header>
+
+
+   <!-- Main content area -->
+   <main id="main-content" class="flex-grow-1" style="padding-top: 80px;" role="main">
+       <!-- Breadcrumb navigation -->
+       {% block breadcrumb %}
+       {% if request.resolver_match.url_name != 'home' %}
+       <div class="container mt-3">
+           <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                   <li class="breadcrumb-item">
+                       <a href="{% url 'home' %}">
+                           <i class="bi bi-house-fill me-1"></i>Inicio
+                       </a>
+                   </li>
+                   {% block breadcrumb_items %}{% endblock %}
+               </ol>
+           </nav>
+       </div>
+       {% endif %}
+       {% endblock %}
+
+
+       <!-- Flash messages -->
+       {% if messages %}
+       <div class="container mt-3">
+           {% for message in messages %}
+           <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+               <i class="bi bi-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% elif message.tags == 'warning' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+               {{ message }}
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+           </div>
+           {% endfor %}
+       </div>
+       {% endif %}
+
+
+       <!-- Page content -->
+       {% block content %}
+       <!-- Default content will be here -->
+       {% endblock %}
+   </main>
+
+
+   <!-- Footer -->
+   <footer class="text-center py-5 mt-auto" role="contentinfo">
+       <div class="container">
+           <div class="row">
+               <div class="col-md-4 mb-3">
+                   <h5 class="text-white mb-3">
+                       <i class="bi bi-airplane-fill me-2"></i>AeroLine
+                   </h5>
+                   <p class="text-white-50 small">
+                       Sistema integral de gestión aeroportuaria y control de vuelos.
+                   </p>
+               </div>
+               <div class="col-md-4 mb-3">
+                   <h6 class="text-white mb-3">Enlaces Rápidos</h6>
+                   <ul class="list-unstyled">
+                       <li><a href="" class="small">Inicio</a></li>
+                       <li><a href="" class="small">Vuelos</a></li>
+                       <li><a href="" class="small">Aeronaves</a></li>
+                       <li><a href="" class="small">Aeropuertos</a></li>
+                   </ul>
+               </div>
+               <div class="col-md-4 mb-3">
+                   <h6 class="text-white mb-3">Contacto</h6>
+                   <p class="text-white-50 small mb-1">
+                       <i class="bi bi-envelope me-2"></i>info@aeroline.com
+                   </p>
+                   <p class="text-white-50 small mb-1">
+                       <i class="bi bi-telephone me-2"></i>+1 (555) 123-4567
+                   </p>
+                   <p class="text-white-50 small">
+                       <i class="bi bi-geo-alt me-2"></i>Dirección Corporativa
+                   </p>
+               </div>
+           </div>
+           <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+           <div class="row align-items-center">
+               <div class="col-md-6 text-md-start">
+                   <small class="text-white-50">
+                       &copy; {% now "Y" %} AeroLine. Todos los derechos reservados.
+                   </small>
+               </div>
+               <div class="col-md-6 text-md-end">
+                   <small class="text-white-50">
+                       Versión {% block version %}1.0.0{% endblock %} |
+                       <a href="" class="text-white-50">Privacidad</a> |
+                       <a href="" class="text-white-50">Términos</a>
+                   </small>
+               </div>
+           </div>
+       </div>
+   </footer>
+
+
+   <!-- Bootstrap JS Bundle -->
+   <script
+       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+       crossorigin="anonymous">
+   </script>
+  
+   <!-- Custom JavaScript -->
+   <script src="{% static 'js/main.js' %}"></script>
+  
+   <!-- Block for additional JavaScript -->
+   {% block extra_js %}{% endblock %}
+  
+   <!-- Global JavaScript for common functionality -->
+   <script>
+       // Navbar scroll effect
+       window.addEventListener('scroll', function() {
+           const navbar = document.querySelector('.navbar');
+           if (window.scrollY > 50) {
+               navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+           } else {
+               navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+           }
+       });
+      
+       // Auto-hide alerts after 5 seconds
+       document.addEventListener('DOMContentLoaded', function() {
+           setTimeout(function() {
+               const alerts = document.querySelectorAll('.alert');
+               alerts.forEach(function(alert) {
+                   const bsAlert = new bootstrap.Alert(alert);
+                   bsAlert.close();
+               });
+           }, 5000);
+       });
+      
+       // Smooth scrolling for anchor links
+       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+           anchor.addEventListener('click', function (e) {
+               e.preventDefault();
+               const target = document.querySelector(this.getAttribute('href'));
+               if (target) {
+                   target.scrollIntoView({
+                       behavior: 'smooth',
+                       block: 'start'
+                   });
+               }
+           });
+       });
+      
+       // Form validation feedback
+       (function() {
+           'use strict';
+           window.addEventListener('load', function() {
+               const forms = document.getElementsByClassName('needs-validation');
+               Array.prototype.filter.call(forms, function(form) {
+                   form.addEventListener('submit', function(event) {
+                       if (form.checkValidity() === false) {
+                           event.preventDefault();
+                           event.stopPropagation();
+                       }
+                       form.classList.add('was-validated');
+                   }, false);
+               });
+           }, false);
+       })();
+   </script>
+</body>
+</html>
